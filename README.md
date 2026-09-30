@@ -34,10 +34,18 @@ All tunable thresholds (goal line 5/10, short 2/3, minimum attempts, RB and QB q
 
 ## Deploy
 
-1. Push this folder to a GitHub repository.
-2. Cloudflare Pages → Create project → connect the repo. Build command: *none*. Build output directory: `site`.
-3. The `Refresh data` workflow runs every Tuesday at 6am Pacific (and on demand from the Actions tab),
-   commits `site/data/*.json`, and Cloudflare redeploys from the push.
+The site is plain static files, so any static host works. Two Cloudflare paths, both free:
+
+- **Cloudflare Pages**: Workers & Pages → Create → Pages → Connect to Git → this repo.
+  Build command: *none*. Build output directory: `site`. URL: `https://<project>.pages.dev`.
+- **Cloudflare Workers (Import a repository)**: uses `wrangler.jsonc` in this repo, which serves `site/`
+  as static assets. Build command: *none*. Deploy command: `npx wrangler deploy`.
+  URL: `https://seahawks-dash.<account>.workers.dev`.
+
+GitHub Pages also serves it from the root of `main` at `/site/`.
+
+The `Refresh data` workflow runs every Tuesday at 6am Pacific (and on demand from the Actions tab),
+commits `site/data/*.json`, and the host redeploys from the push.
 
 The workflow needs no secrets: it uses the repository's built-in `GITHUB_TOKEN` to push.
 

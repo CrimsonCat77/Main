@@ -1,0 +1,11 @@
+// Cloudflare Workers config: serve the static site in site/ as assets (no code, no build).
+// Used by Cloudflare's "Import a repository" (Workers Builds) flow. Cloudflare Pages ignores this file
+// and needs only "build output directory = site".
+{
+  "name": "seahawks-dash",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./site",
+    "not_found_handling": "404-page"
+  }
+}
