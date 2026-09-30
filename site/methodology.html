@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard Methodology</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header"><div class="wrap"><div><div class="crumb"><a href="index.html">← Seahawks Dashboard</a></div><h1>Methodology</h1><div class="sub">How every number is defined</div></div></div></header>
+<main class="wrap method">
+  <section>
+    <h2>Data</h2>
+    <p>All numbers come from <a href="https://github.com/nflverse/nflverse-data">nflverse</a> release files read with <code>nflreadr</code>: play-by-play (<code>load_pbp</code>), schedules, rosters, players, weekly player stats and weekly team stats. The pipeline is an R script that runs weekly (Tuesday morning Pacific) and writes static JSON; the site is static HTML.</p>
+  </section>
+  <section>
+    <h2>Play filter</h2>
+    <p>Before anything else, play-by-play is restricted to regular-season plays with a non-missing EPA whose <code>play_type</code> is <code>run</code> or <code>pass</code>. That drops kickoffs, punts, field goals, extra points, kneel-downs, spikes and nullified (no-play) penalties. Team box-score totals therefore differ from official totals by kneel-down yards.</p>
+  </section>
+  <section>
+    <h2>Rushing definitions</h2>
+    <ul>
+      <li><b>Team rushing</b> (Section 3a, box scores): <code>rush_attempt == 1</code>, which includes QB scrambles.</li>
+      <li><b>Designed runs</b> (RB table, all situational stats): <code>rush_attempt == 1 &amp; qb_scramble == 0</code>.</li>
+      <li><b>Rush share</b>: designed runs ÷ (designed runs + dropbacks), where a dropback is <code>qb_dropback == 1</code>.</li>
+      <li><b>Explosive run</b>: 10+ yards. Explosive play rate on game pages: 20+ yard pass or 10+ yard run.</li>
+      <li><b>Success</b>: nflverse <code>success</code> (EPA &gt; 0).</li>
+    </ul>
+  </section>
+  <section>
+    <h2>Situations</h2>
+    <ul>
+      <li><b>Goal line</b>: <code>yardline_100 ≤ 5</code> by default, ≤ 10 as a toggle.</li>
+      <li><b>3rd and short</b>: <code>down == 3 &amp; ydstogo ≤ 2</code> by default, ≤ 3 as a toggle. 4th and short uses the same distance.</li>
+      <li><b>Conversion</b>: first down or touchdown on the play.</li>
+      <li><b>League rate</b> for situational stats is pooled across all 32 teams (total TDs ÷ total attempts), not the average of team rates.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>Ranks</h2>
+    <p>Every stat is computed for all 32 teams from the same filtered play-by-play and then ranked 1–32; ties share the better rank. Each stat carries a <code>higher_is_better</code> flag so defensive stats rank correctly (rank 1 = fewest allowed). Situational ranks require a minimum number of attempts: 10 goal-line rushes and 15 third-and-short rushes over a full season, prorated by weeks completed with a floor of 3, so ranks exist early in the season. Teams below the threshold show "n/a".</p>
+    <p>Running backs are ranked on yards per game among all RBs/FBs averaging at least 5 designed carries per game. Quarterbacks are ranked among QBs with at least 14 dropbacks per team game played.</p>
+  </section>
+  <section>
+    <h2>Team averages</h2>
+    <ul>
+      <li>Points from the schedule file. Yards from play-by-play: passing yards are net of sack yardage; rushing yards include scrambles.</li>
+      <li>Red zone trip: a drive with at least one run/pass snap inside the opponent 20; TD if the drive ended in a touchdown.</li>
+      <li>Turnovers: interceptions plus fumbles lost on offensive snaps. Takeaways mirror that from the defense's side. Special-teams turnovers are not counted.</li>
+      <li>Time of possession is summed from nflverse drive data.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>Opponent and quarterback</h2>
+    <ul>
+      <li><b>Best win / worst loss</b>: among the opponent's wins, the beaten team with the highest <i>current</i> win percentage (W + ½T) ÷ games; among losses, the winner with the lowest. Ties go to more games played, then alphabetical. The record at the time of the game is shown as a secondary line.</li>
+      <li><b>Division standing</b>: win percentage, then point differential (a simplification of the official tiebreakers).</li>
+      <li><b>Starting QB</b>: the opponent passer with the most dropbacks in the game; for upcoming games, their most recent starter. A flag shows when that differs from the QB with the most starts this season.</li>
+      <li><b>Career stats</b>: summed from weekly player stats, regular season, 1999–present. Dropbacks = attempts + sacks. The career record as starter credits, for each team-game, the passer with the most dropbacks. A QB injured on the opening drive is credited with neither a start nor a decision.</li>
+      <li><b>Prior-season baseline</b>: previous regular season only (no playoffs).</li>
+    </ul>
+  </section>
+  <footer>Source and pipeline: see the repository README.</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# raw nflverse downloads and derived caches (rebuilt on demand; historical seasons cached by CI)
+cache/
+.Rhistory
+.RData
+.Rproj.user/
+*.Rproj
+.DS_Store
+Thumbs.db

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seahawks Dashboard</title>
+<meta name="description" content="Seattle Seahawks season dashboard built from nflverse play-by-play: team averages, rushing, and situational rushing with league ranks.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <div>
+      <h1>Seattle Seahawks</h1>
+      <div class="sub" id="hdr-sub">Loading…</div>
+    </div>
+    <div class="record" id="hdr-record"></div>
+    <div class="meta" id="hdr-meta"></div>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <section id="sec-schedule">
+    <h2>Schedule</h2>
+    <p class="lede">Played games open the game page; upcoming games open an opponent preview.</p>
+    <div class="strip" id="strip"></div>
+  </section>
+
+  <section id="sec-averages">
+    <h2>Team averages</h2>
+    <p class="lede">Per game, regular season only. Offense ranks higher-is-better; defense ranks fewest-allowed-is-best.</p>
+    <div id="rank-legend"></div>
+    <h3>Offense</h3>
+    <div class="cards" id="cards-off"></div>
+    <h3>Defense</h3>
+    <div class="cards" id="cards-def"></div>
+  </section>
+
+  <section id="sec-rushing">
+    <h2>Rushing offense</h2>
+    <p class="lede">Team rushing includes QB scrambles; the running back table and situational stats use designed runs only.</p>
+    <div class="two-col">
+      <div>
+        <div class="cards" id="cards-rush"></div>
+        <p class="note" id="rush-totals"></p>
+      </div>
+      <div class="panel">
+        <h3>Rushing yards by week</h3>
+        <div id="spark"></div>
+      </div>
+    </div>
+    <h3>Running backs</h3>
+    <div class="tbl-wrap"><table id="rb-table"></table></div>
+    <p class="note" id="rb-note"></p>
+  </section>
+
+  <section id="sec-situ-off">
+    <h2>Situational rushing — offense</h2>
+    <p class="lede">Designed runs only. Ranks are among teams meeting the minimum-attempt threshold (prorated by weeks played).</p>
+    <div id="situ-off"></div>
+  </section>
+
+  <section id="sec-situ-def">
+    <h2>Situational rushing — defense</h2>
+    <p class="lede">Same situations from the defensive side: the opponent is the offense, and lower allowed is better.</p>
+    <div id="situ-def"></div>
+  </section>
+
+  <footer>
+    Data: <a href="https://github.com/nflverse/nflverse-data" target="_blank" rel="noopener">nflverse</a> play-by-play, schedules, rosters and player stats via nflreadr.
+    · <a href="methodology.html">Methodology</a>
+    · <a id="repo-link" href="#">Source</a>
+    <span id="footer-refresh"></span>
+  </footer>
+</main>
+
+<script src="assets/common.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
